@@ -1,0 +1,53 @@
+<!DOCTYPEhtml>
+<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title>itemlist</title>
+<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"
+	th:href="@{css/bootstrap.min.css}">
+</head>
+
+<body>
+	<div class="container">
+		<h1 class="text-center">FFXIV Items</h1>
+		<div class="col-lg-3 float-right">
+				<form th:action="@{/logout}" method="post">
+					<input class="btn btn-danger float-right" type="submit" value="Sign out"/>
+				</form>
+		<div class="row">
+			<div class="col-lg-4">
+			<h4 th:inline="text">User: [[${#httpServletRequest.remoteUser}]]</h4>
+			</div>
+			
+			</div>
+		</div>
+		<table class="table table-striped">
+			<tr>
+				<th>Item</th>
+				<th>Item level</th>
+				<th>Source</th>
+				<th>Rarity</th>
+				<th>Slot</th>
+				<th></th>
+				<th></th>
+			</tr>
+			<tr th:each="item : ${items}">
+				<td th:text="${item.itemname}"></td>
+				<td th:text="${item.ilevel}"></td>
+				<td th:text="${item.source}"></td>
+				<td th:text="${item.rarity.rname}"></td>
+				<td th:text="${item.slot.name}"></td>
+				<td sec:authorize="hasAuthority('ADMIN')">
+					<a th:href="@{/delete/{id}(id=${item.id})}" class="btn btn-danger">Delete</a>
+				</td>
+				<td>
+					<a th:href="@{/edit/{id}(id=${item.id})}" class="btn btn-primary">Edit</a>
+				</td>
+			</tr>
+		</table>
+		<a href="/add" class="btn btn-success">Add item</a>
+	</div>
+</body>
+
+</html>
